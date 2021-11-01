@@ -30,7 +30,10 @@ export class UserService {
   }
 
   public async findOne(username: string): Promise<UserEntity> {
-    return this.userRepository.findOne({ username })
+    return this.userRepository.findOne(
+      { username },
+      { select: ['id', 'username', 'email', 'password'] },
+    )
   }
 
   private async throwExceptionIfUserExists(createUserDto: CreateUserDto) {
