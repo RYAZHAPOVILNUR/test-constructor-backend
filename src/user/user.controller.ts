@@ -1,11 +1,19 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { UserService } from './user.service'
 import { UserEntity } from './user.entity'
 import { CreateUserDto } from './dto/createUser.dto'
+import { ExpressRequest } from '../types/expressRequest.interface'
+import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  public getCurrentUser(@Request() req: ExpressRequest): UserEntity {
+    return req.user
+  }
 
   @Post('register')
   public async createUser(
