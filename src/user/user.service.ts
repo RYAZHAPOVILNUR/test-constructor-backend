@@ -29,6 +29,10 @@ export class UserService {
     return this.userRepository.save(newUser)
   }
 
+  public async findOne(username: string): Promise<UserEntity> {
+    return this.userRepository.findOne({ username })
+  }
+
   private async throwExceptionIfUserExists(createUserDto: CreateUserDto) {
     const { email, username } = createUserDto
 
