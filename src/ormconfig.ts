@@ -8,7 +8,7 @@ const config: ConnectionOptions = {
   password: '123',
   database: 'test-constructor',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  synchronize: false,
+  synchronize: true, // todo set to false after
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
   cli: {
     migrationsDir: 'src/migrations',

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { UserEntity } from './user.entity'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/createUser.dto'
+import { CreateUserResponseType } from './types/createUserResponse.type'
 
 const getUserExistResponse = (property: string) =>
   `Пользователь с таким ${property} уже существует`
@@ -23,10 +24,17 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  public async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
+  public async createUser(
+    createUserDto: CreateUserDto,
+  ): Promise<CreateUserResponseType> {
     await this.throwExceptionIfUserExists(createUserDto)
-    const newUser = Object.assign(createUserDto, new UserEntity())
-    return this.userRepository.save(newUser)
+
+    const newUser = new UserEntity()
+    Object.assign(newUser, createUserDto)
+    const createdUser = await this.userRepository.save(newUser)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...createdUserWithoutPassword } = createdUser
+    return createdUserWithoutPassword
   }
 
   public async findOne(username: string): Promise<UserEntity> {

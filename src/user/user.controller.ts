@@ -4,6 +4,7 @@ import { UserEntity } from './user.entity'
 import { CreateUserDto } from './dto/createUser.dto'
 import { ExpressRequest } from '../types/expressRequest.interface'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+import { CreateUserResponseType } from './types/createUserResponse.type'
 
 @Controller('user')
 export class UserController {
@@ -18,7 +19,7 @@ export class UserController {
   @Post('register')
   public async createUser(
     @Body() createUserDto: CreateUserDto,
-  ): Promise<UserEntity> {
+  ): Promise<CreateUserResponseType> {
     return await this.userService.createUser(createUserDto)
   }
 }
